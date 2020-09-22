@@ -10,5 +10,5 @@ Dataset is from Kaggle's CAPTCHA Images.</br>
 # Result
 
 ![](./result.jpg)
-![](./Learning curve.jpg)
+![](./learning_curve.jpg)
 ![](./model_structure.jpg)
