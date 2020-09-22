@@ -1,3 +1,6 @@
+"""
+## Import packages and load data
+"""
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,32 +13,11 @@ from tensorflow import keras
 from tensorflow.keras import layers
 
 
-"""
-## Load the data: [Captcha Images](https://www.kaggle.com/fournierp/captcha-version-2-images)
-Let's download the data.
-"""
-
-
-"""shell
-curl -LO https://github.com/AakashKumarNain/CaptchaCracker/raw/master/captcha_images_v2.zip
-unzip -qq captcha_images_v2.zip
-"""
-
-
-"""
-The dataset contains 1040 captcha files as `png` images. The label for each sample is a string,
-the name of the file (minus the file extension).
-We will map each character in the string to an integer for training the model. Similary,
-we will need to map the predictions of the model back to strings. For this purpose
-we will maintain two dictionaries, mapping characters to integers, and integers to characters,
-respectively.
-"""
-
 
 # Path to the data directory
 data_dir = Path("./captcha_images_v2/")
 
-# Get list of all the images
+# Get all fo the image
 images = sorted(list(map(str, list(data_dir.glob("*.png")))))
 labels = [img.split(os.path.sep)[-1].split(".png")[0] for img in images]
 characters = set(char for label in labels for char in label)
@@ -45,10 +27,10 @@ print("Number of labels found: ", len(labels))
 print("Number of unique characters: ", len(characters))
 print("Characters present: ", characters)
 
-# Batch size for training and validation
+# Batch size
 batch_size = 16
 
-# Desired image dimensions
+# Image dimensions
 img_width = 200
 img_height = 50
 
