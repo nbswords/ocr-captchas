@@ -9,4 +9,6 @@ Dataset is from Kaggle's CAPTCHA Images.</br>
 
 # Result
 
-![](./result/result.jpg)
+![](./result.jpg)
+![](./Learning curve.jpg)
+![](./model_structure.jpg)
