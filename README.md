@@ -1,6 +1,6 @@
 # ocr-captchas
 
-A pratice of OCR model for reading Captchas
+A pratice of OCR model for reading Captchas by Tensorflow.Keras
 
 # Data
 Dataset is from Kaggle's CAPTCHA Images.</br>
