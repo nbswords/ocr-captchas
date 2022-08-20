@@ -19,5 +19,6 @@ Dataset is from Kaggle's CAPTCHA Images.</br>
 
 # model
 CRNN + CTC loss
+
 ![](./model_structure.jpg)
 </br>
