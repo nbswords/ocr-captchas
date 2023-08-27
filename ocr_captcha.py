@@ -19,7 +19,7 @@ data_dir = Path("./captcha_images_v2/")
 # Get images
 images = sorted(list(map(str, list(data_dir.glob("*.png")))))
 labels = [img.split(os.path.sep)[-1].split(".png")[0] for img in images]
-characters = set(char for label in labels for char in label)
+characters = sorted(set(char for label in labels for char in label))
 
 print("Number of images found: ", len(images))
 print("Number of labels found: ", len(labels))
@@ -267,6 +267,7 @@ def decode_batch_predictions(pred):
     # Iterate over the results and get back the text
     output_text = []
     for res in results:
+		res = tf.add(res, 1)
         res = tf.strings.reduce_join(num_to_char(res)).numpy().decode("utf-8")
         output_text.append(res)
     return output_text
