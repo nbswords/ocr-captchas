@@ -7,7 +7,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from pathlib import Path
-from collections import Counter
 
 import tensorflow as tf
 from tensorflow import keras
@@ -20,6 +19,7 @@ data_dir = Path("./captcha_images_v2/")
 images = sorted(list(map(str, list(data_dir.glob("*.png")))))
 labels = [img.split(os.path.sep)[-1].split(".png")[0] for img in images]
 characters = set(char for label in labels for char in label)
+characters = sorted(list(characters))
 
 print("Number of images found: ", len(images))
 print("Number of labels found: ", len(labels))
@@ -48,12 +48,10 @@ max_length = max([len(label) for label in labels])
 
 
 # Mapping characters to integers
-char_to_num = layers.experimental.preprocessing.StringLookup(
-    vocabulary=list(characters), num_oov_indices=0, mask_token=None
-)
+char_to_num = layers.StringLookup(vocabulary=list(characters), mask_token=None)
 
 # Mapping integers back to original characters
-num_to_char = layers.experimental.preprocessing.StringLookup(
+num_to_char = layers.StringLookup(
     vocabulary=char_to_num.get_vocabulary(), mask_token=None, invert=True
 )
 
@@ -102,20 +100,16 @@ def encode_single_sample(img_path, label):
 
 train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
 train_dataset = (
-    train_dataset.map(
-        encode_single_sample, num_parallel_calls=tf.data.experimental.AUTOTUNE
-    )
+    train_dataset.map(encode_single_sample, num_parallel_calls=tf.data.AUTOTUNE)
     .batch(batch_size)
-    .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
+    .prefetch(buffer_size=tf.data.AUTOTUNE)
 )
 
 validation_dataset = tf.data.Dataset.from_tensor_slices((x_valid, y_valid))
 validation_dataset = (
-    validation_dataset.map(
-        encode_single_sample, num_parallel_calls=tf.data.experimental.AUTOTUNE
-    )
+    validation_dataset.map(encode_single_sample, num_parallel_calls=tf.data.AUTOTUNE)
     .batch(batch_size)
-    .prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
+    .prefetch(buffer_size=tf.data.AUTOTUNE)
 )
 
 """
@@ -205,7 +199,9 @@ def build_model():
     x = layers.Bidirectional(layers.LSTM(64, return_sequences=True, dropout=0.25))(x)
 
     # Output layer
-    x = layers.Dense(len(characters) + 1, activation="softmax", name="dense2")(x)
+    x = layers.Dense(
+        len(char_to_num.get_vocabulary()) + 1, activation="softmax", name="dense2"
+    )(x)
 
     # Add CTC layer for calculating CTC loss at each step
     output = CTCLayer(name="ctc_loss")(labels, x)
