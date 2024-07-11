@@ -25,7 +25,6 @@ python ocr_captcha.py
 python predict_example.py
 ```
 
-
 ## Result
 
 ![result](./result.jpg)
@@ -37,6 +36,7 @@ python predict_example.py
 </br>
 
 ## model
+
 CRNN + CTC loss
 
 ![model_structure](./model_structure.jpg)
