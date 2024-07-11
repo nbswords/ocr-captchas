@@ -9,7 +9,7 @@ from tensorflow.keras.models import load_model
 """
 img_width = 200
 img_height = 50
-max_length = 6  # Adjust this based on your dataset
+max_length = 5  # Adjust this based on your dataset
 
 # Characters present in the dataset must be as same as the one used in training
 characters = sorted(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
