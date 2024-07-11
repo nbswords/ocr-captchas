@@ -10,7 +10,7 @@ python ocr_captcha.py
 ```
 
 ```shell
-# Inference one image
+# Inference with single image named `test.png`
 python predict_example.py
 ```
 
