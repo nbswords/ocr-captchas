@@ -18,8 +18,9 @@ data_dir = Path("./captcha_images_v2/")
 # Get images
 images = sorted(list(map(str, list(data_dir.glob("*.png")))))
 labels = [img.split(os.path.sep)[-1].split(".png")[0] for img in images]
-characters = set(char for label in labels for char in label)
-characters = sorted(list(characters))
+characters = sorted(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
+                    'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])
+
 
 print("Number of images found: ", len(images))
 print("Number of labels found: ", len(labels))
@@ -66,13 +67,16 @@ def split_data(images, labels, train_size=0.9, shuffle=True):
     # 3. Get the size of training samples
     train_samples = int(size * train_size)
     # 4. Split data into training and validation sets
-    x_train, y_train = images[indices[:train_samples]], labels[indices[:train_samples]]
-    x_valid, y_valid = images[indices[train_samples:]], labels[indices[train_samples:]]
+    x_train, y_train = images[indices[:train_samples]
+                              ], labels[indices[:train_samples]]
+    x_valid, y_valid = images[indices[train_samples:]
+                              ], labels[indices[train_samples:]]
     return x_train, x_valid, y_train, y_valid
 
 
 # Splitting data into training and validation sets
-x_train, x_valid, y_train, y_valid = split_data(np.array(images), np.array(labels))
+x_train, x_valid, y_train, y_valid = split_data(
+    np.array(images), np.array(labels))
 
 
 def encode_single_sample(img_path, label):
@@ -88,7 +92,8 @@ def encode_single_sample(img_path, label):
     # dimension to correspond to the width of the image.
     img = tf.transpose(img, perm=[1, 0, 2])
     # 6. Map the characters in label to numbers
-    label = char_to_num(tf.strings.unicode_split(label, input_encoding="UTF-8"))
+    label = char_to_num(tf.strings.unicode_split(
+        label, input_encoding="UTF-8"))
     # 7. Return a dict as our model is expecting two inputs
     return {"image": img, "label": label}
 
@@ -100,14 +105,16 @@ def encode_single_sample(img_path, label):
 
 train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
 train_dataset = (
-    train_dataset.map(encode_single_sample, num_parallel_calls=tf.data.AUTOTUNE)
+    train_dataset.map(encode_single_sample,
+                      num_parallel_calls=tf.data.AUTOTUNE)
     .batch(batch_size)
     .prefetch(buffer_size=tf.data.AUTOTUNE)
 )
 
 validation_dataset = tf.data.Dataset.from_tensor_slices((x_valid, y_valid))
 validation_dataset = (
-    validation_dataset.map(encode_single_sample, num_parallel_calls=tf.data.AUTOTUNE)
+    validation_dataset.map(encode_single_sample,
+                           num_parallel_calls=tf.data.AUTOTUNE)
     .batch(batch_size)
     .prefetch(buffer_size=tf.data.AUTOTUNE)
 )
@@ -123,7 +130,8 @@ for batch in train_dataset.take(1):
     labels = batch["label"]
     for i in range(16):
         img = (images[i] * 255).numpy().astype("uint8")
-        label = tf.strings.reduce_join(num_to_char(labels[i])).numpy().decode("utf-8")
+        label = tf.strings.reduce_join(
+            num_to_char(labels[i])).numpy().decode("utf-8")
         ax[i // 4, i % 4].imshow(img[:, :, 0].T, cmap="gray")
         ax[i // 4, i % 4].set_title(label)
         ax[i // 4, i % 4].axis("off")
@@ -241,6 +249,8 @@ history = model.fit(
     callbacks=[early_stopping],
 )
 
+# Save the model
+model.save('captcha_ocr_model')
 
 """
 ## Inference
@@ -278,7 +288,8 @@ for batch in validation_dataset.take(1):
 
     orig_texts = []
     for label in batch_labels:
-        label = tf.strings.reduce_join(num_to_char(label)).numpy().decode("utf-8")
+        label = tf.strings.reduce_join(
+            num_to_char(label)).numpy().decode("utf-8")
         orig_texts.append(label)
 
     _, ax = plt.subplots(4, 4, figsize=(15, 5))

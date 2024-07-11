@@ -2,23 +2,35 @@
 
 A pratice of OCR model for recognition Captchas by Tensorflow.Keras
 
-# Data
+## Usage
+
+```shell
+# Train and save model
+python ocr_captcha.py
+```
+
+```shell
+# Inference one image
+python predict_example.py
+```
+
+## Data
 Dataset is from Kaggle's CAPTCHA Images.</br>
 
 [Link](https://www.kaggle.com/fournierp/captcha-version-2-images)
 
-# Result
+## Result
 
-![](./result.jpg)
+![result](./result.jpg)
 </br>
 
-# Learning curve
+## Learning curve
 
-![](./learning_curve.jpg)
+![learning_curve](./learning_curve.jpg)
 </br>
 
-# model
+## model
 CRNN + CTC loss
 
-![](./model_structure.jpg)
+![model_structure](./model_structure.jpg)
 </br>
