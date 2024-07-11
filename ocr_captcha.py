@@ -13,7 +13,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 
 # Path of data directory 
-data_dir = Path("./captcha_images_v2/")
+data_dir = Path("./captcha_images/")
 
 # Get images
 images = sorted(list(map(str, list(data_dir.glob("*.png")))))
