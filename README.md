@@ -2,9 +2,16 @@
 
 A pratice of OCR model for recognition Captchas by Tensorflow.Keras
 
+## Data
+
+Example Dataset is from Kaggle's CAPTCHA Images.</br>
+
+[Link](https://www.kaggle.com/fournierp/captcha-version-2-images)
+
 ## Usage
 
 - Prepare your data and name the folder `captcha_images`
+  - notice that the label of captchas should be the filename of image just like example data
 
 - Train and save the model
 
@@ -18,10 +25,6 @@ python ocr_captcha.py
 python predict_example.py
 ```
 
-## Data
-Example Dataset is from Kaggle's CAPTCHA Images.</br>
-
-[Link](https://www.kaggle.com/fournierp/captcha-version-2-images)
 
 ## Result
 
